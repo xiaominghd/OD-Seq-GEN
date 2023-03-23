@@ -35,15 +35,16 @@ class GANLoss(nn.Module):
         loss = -torch.sum(loss)
         return loss
 
+
 class distance_loss(nn.Module):
 
     def __init__(self, datasets, device):
         super(distance_loss, self).__init__()
         if datasets == 'mobile':
-            with open('/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/mobile/gps') as f:
+            with open('./data/mobile/gps') as f:
                 gpss = f.readlines()
         else:
-             with open('/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/geolife/gps') as f:
+            with open('./data/HaiNan/gps') as f:
                 gpss = f.readlines()
         self.X = []
         self.Y = []
@@ -69,7 +70,7 @@ class distance_loss(nn.Module):
         y2 = torch.index_select(self.Y, 0, x[:, 1:].contiguous().view(-1))
         dx = x1 - x2
         dy = y1 - y2
-        loss = dx**2 + dy**2
+        loss = dx ** 2 + dy ** 2
         loss = torch.sum(loss) / loss.size(0)
         return loss
 

@@ -1,12 +1,12 @@
-# 在不同的数据集上跑通每一个模型
-def runMovsim(pretrain=None):
+import numpy as np
+import pickle
+real = "/mnt/data/gonghaofeng/deeplearning_project/ODseq_GAN_remote/model/Movsim/data/HaiNan/dispre.data"
+with open(real, 'r') as f:
+    data = []
+    for line in f.readlines():
+        line = line.strip("\n").split(" ")
+        line = list(map(lambda x:int(x), line))
+        data.append(line)
 
-    if pretrain is not None:
-
-
-
-
-
-
-if __name__=="__main__":
-
+with open('fake_data.pkl', 'wb') as f:
+    pickle.dump(data, f)

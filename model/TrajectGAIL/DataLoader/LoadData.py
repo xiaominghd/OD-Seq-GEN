@@ -3,11 +3,13 @@ import random
 import numpy as np
 import torch
 
+
 # data = np.load("../data/train_data.pkl", allow_pickle=True)
 
 
 def prepare_pretrain(x: list):
-    traject = [t for [t, _] in x]
+    # traject = [t for [t, _] in x]
+    traject = x
     random.shuffle(traject)
     inp = np.zeros((len(traject), len(traject[0]) - 1))
     target = np.zeros((len(traject), len(traject[0]) - 1))
@@ -18,9 +20,10 @@ def prepare_pretrain(x: list):
     return torch.Tensor(inp).type(torch.long), torch.Tensor(target).type(torch.long)
 
 
-def prepare_discriminator(real: list, fake: list):
+def prepare_discriminator(real: list, fake: list, raw=True):
     n = len(real)
-    real_t = [t for [t, _] in real]
+    # real_t = [t for [t, _] in real]
+    real_t = real
     fake_t = fake
     real_t.extend(fake_t)
     state = np.zeros((len(real_t), len(real_t[0]) - 1))
@@ -35,5 +38,3 @@ def prepare_discriminator(real: list, fake: list):
     action = action[shuffle]
     target = index[shuffle]
     return torch.tensor(state).type(torch.long), torch.tensor(action).type(torch.long), torch.Tensor(target)
-
-

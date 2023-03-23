@@ -179,7 +179,7 @@ class ATGenerator(nn.Module):
             tim_embedding_dim=16,
             hidden_dim=64,
             bidirectional=False,
-            data='geolife',
+            data='HaiNan',
             device=None,
             function=False, 
             starting_sample='zero',
@@ -208,8 +208,8 @@ class ATGenerator(nn.Module):
         self.starting_sample = starting_sample
         self.function = function
         # process distance weights
-        self.M1 = np.load('/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/%s/M1.npy' % self.data)
-        self.M2 = np.load('/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/%s/M2.npy' % self.data)
+        self.M1 = np.load('./data/%s/M1.npy' % self.data)
+        self.M2 = np.load('./data/%s/M2.npy' % self.data)
 
         
         if self.starting_sample == 'real':

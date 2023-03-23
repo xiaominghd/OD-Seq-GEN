@@ -45,12 +45,4 @@ def train_policy(gen, inp):
         J_loss += torch.mean(value)
     return -(J_loss + 0.1 * e_loss)
 
-# model = GAIL(state_dim=38000, action_dim=38000, hidden=32, num_layers=3)
-# model.load_state_dict(torch.load('../Result1/GAIL_v.pth'))
-# # dis = Discriminator(state_dim=38000, action_dim=38000, hidden=32,
-# #                     num_layers=3)
-# # dis.load_state_dict(torch.load("../Result1/pretrain_dis.pth"))
-# state_seq = torch.tensor([[10973, 10598, 10599], [10973, 10598, 10599], [10973, 10598, 10599]])
-# action = torch.tensor([10598, 10598, 10599])
-# x = train_policy(model, state_seq)
-# print(x)
+

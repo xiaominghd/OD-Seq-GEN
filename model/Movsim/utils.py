@@ -9,6 +9,7 @@ import logging
 import hashlib
 import numpy as np
 
+
 def hash_args(*args):
     # json.dumps will keep the dict keys always sorted.
     string = json.dumps(args, sort_keys=True, default=str)  # frozenset
@@ -17,7 +18,7 @@ def hash_args(*args):
 
 def use_gpu(idx):
     # 0->2,3->1,1->3,2->0
-    map = {0:2, 3:1, 1:3, 2:0}
+    map = {0: 2, 3: 1, 1: 3, 2: 0}
     return map[idx]
 
 
@@ -100,15 +101,15 @@ def prep_workspace(workspace, datasets, oridata):
     :param oridata:
     :return:
     """
-    data_path = '/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data'
-    if not os.path.exists(data_path+'/%s/%s' % (datasets,workspace)):
-        os.mkdir(data_path+'/%s/%s' % (datasets,workspace))
-    if not os.path.exists(data_path+'/%s/%s/data' % (datasets,workspace)):
-        os.mkdir(data_path+'/%s/%s/data' % (datasets,workspace))
-    if not os.path.exists(data_path+'/%s/%s/logs' % (datasets,workspace)):
-        os.mkdir(data_path+'/%s/%s/logs' % (datasets,workspace))
-    if not os.path.exists(data_path+'/%s/%s/figs' % (datasets,workspace)):
-        os.mkdir(data_path+'/%s/%s/figs' % (datasets,workspace))
+    data_path = './data'
+    if not os.path.exists(data_path + '/%s/%s' % (datasets, workspace)):
+        os.mkdir(data_path + '/%s/%s' % (datasets, workspace))
+    if not os.path.exists(data_path + '/%s/%s/data' % (datasets, workspace)):
+        os.mkdir(data_path + '/%s/%s/data' % (datasets, workspace))
+    if not os.path.exists(data_path + '/%s/%s/logs' % (datasets, workspace)):
+        os.mkdir(data_path + '/%s/%s/logs' % (datasets, workspace))
+    if not os.path.exists(data_path + '/%s/%s/figs' % (datasets, workspace)):
+        os.mkdir(data_path + '/%s/%s/figs' % (datasets, workspace))
     '''
     shutil.copy("/mnt/data/gonghaofeng/new1/MoveSim-master/data/%s/real.data" %
                 oridata, "/mnt/data/gonghaofeng/new1/MoveSim-master/%s/%s/data/real.data" % (datasets,workspace))
@@ -119,21 +120,20 @@ def prep_workspace(workspace, datasets, oridata):
     shutil.copy("/mnt/data/gonghaofeng/new1/MoveSim-master/data/%s/dispre_10.data" %
                 oridata, "/mnt/data/gonghaofeng/new1/MoveSim-master/%s/%s/data/dispre.data" % (datasets,workspace))
     '''
-    with open(data_path+'/%s/%s/logs/loss.log' % (datasets,workspace), 'w') as f:
+    with open(data_path + '/%s/%s/logs/loss.log' % (datasets, workspace), 'w') as f:
         pass
 
-    with open(data_path+'/%s/%s/logs/jsd.log' % (datasets,workspace), 'w') as f:
+    with open(data_path + '/%s/%s/logs/jsd.log' % (datasets, workspace), 'w') as f:
         pass
-    
+
 
 def get_workspace_logger(datasets):
-   
-    data_path = '/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data'  
+    data_path = './data'
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter(
         "%(asctime)s - %(levelname)s: %(message)s")
-    fh = logging.FileHandler(data_path+'/%s/logs/all.log' % (datasets), mode='w')
+    fh = logging.FileHandler(data_path + '/%s/logs/all.log' % (datasets), mode='w')
     fh.setLevel(logging.INFO)
     fh.setFormatter(formatter)
     ch = logging.StreamHandler()

@@ -31,7 +31,7 @@ def main(opt):
     SEQ_LEN = 24
     GENERATED_NUM = 10000
 
-    DATA_PATH = '/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data'
+    DATA_PATH = './data'
     REAL_DATA = DATA_PATH + '/%s/real.data' % opt.data
     VAL_DATA = DATA_PATH + '/%s/val.data' % opt.data
     TEST_DATA = DATA_PATH + '/%s/test.data' % opt.data
@@ -40,12 +40,12 @@ def main(opt):
     random.seed(SEED)
     np.random.seed(SEED)
 
-    if opt.data == 'mobile':
-        TOTAL_LOCS = 8606
-        individualEval = IndividualEval(data='mobile')
-    else:
+    if opt.data == 'HaiNan':
         TOTAL_LOCS = 2499
-        individualEval = IndividualEval(data='geolife')
+        individualEval = IndividualEval(data='HaiNan')
+    # else:
+    #     TOTAL_LOCS = 2499
+    #     individualEval = IndividualEval(data='HaiNan')
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -72,7 +72,7 @@ def main(opt):
 
     if opt.pretrain:
         generate_samples(generator, BATCH_SIZE, SEQ_LEN, GENERATED_NUM,
-                         DATA_PATH + '/%s/gene_epoch_init.data' % opt.data)
+                         DATA_PATH + '/%s/gen_data/gene_epoch_init.data' % opt.data)
         # pretrain discriminator
         logger.info('pretrain discriminator ...')
         pretrain_real = DATA_PATH + '/%s/real.data' % opt.data
@@ -121,7 +121,7 @@ def main(opt):
     dis_criterion = dis_criterion.to(device)
     generate_samples(generator, BATCH_SIZE, SEQ_LEN, GENERATED_NUM, GENE_DATA)
     generate_samples(generator, BATCH_SIZE, SEQ_LEN, GENERATED_NUM,
-                     DATA_PATH + '/%s/gene_epoch_%d.data' % (opt.data, 0))
+                     DATA_PATH + '/%s/gen_data/gene_epoch_%d.data' % (opt.data, 0))
 
     for epoch in range(EPOCHS):
         gene_data = read_data_from_file(GENE_DATA)
@@ -190,27 +190,26 @@ def main(opt):
                               for j in [epoch, float(gloss.item()), dloss]]))
             f.write('\n')
         if (epoch + 1) % 20 == 0:
-            generate_samples(generator, BATCH_SIZE, SEQ_LEN, GENERATED_NUM, DATA_PATH + '/%s/gene_epoch_%d.data' %
-                             (opt.data, epoch + 1))
+            generate_samples(generator, BATCH_SIZE, SEQ_LEN, GENERATED_NUM, DATA_PATH + '/%s/gen_data/gene_epoch_%d'
+                                                                                        '.data' % (opt.data, epoch + 1))
 
     test_data = read_data_from_file(TEST_DATA)
     gene_data = read_data_from_file(GENE_DATA)
     JSDs = individualEval.get_individual_jsds(t1=gene_data, t2=test_data)
     logger.info("Test JSD: %f, %f, %f, %f, %f, %f" % (JSDs[0], JSDs[1], JSDs[2], JSDs[3], JSDs[4], JSDs[5]))
 
-    torch.save(generator.state_dict(), DATA_PATH + '/%s/generator.pth' % opt.data)
-    torch.save(discriminator.state_dict(), DATA_PATH + '/%s/discriminator.pth' % opt.data)
+    torch.save(generator.state_dict(), DATA_PATH + '/%s/pretrain/generator.pth' % opt.data)
+    torch.save(discriminator.state_dict(), DATA_PATH + '/%s/pretrain/discriminator.pth' % opt.data)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pretrain', default="true", action='store_true')
+    parser.add_argument('--pretrain', default=False, action='store_true')
     parser.add_argument('--cuda', default="0", type=str)
     parser.add_argument('--task', default='attention', type=str)
     parser.add_argument('--ploss', default='3.0', type=float)
     parser.add_argument('--dloss', default='1.5', type=float)
-    parser.add_argument('--data', default='geolife', type=str)
-    # parser.add_argument('--length', default=48, type=int)
+    parser.add_argument('--data', default='HaiNan', type=str)
     parser.add_argument('--length', default=24, type=int)
 
     opt = parser.parse_args()
