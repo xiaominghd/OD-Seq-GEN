@@ -46,7 +46,6 @@ def main(opt):
             torch.save(gen.state_dict(), './Result/%s/pretrain_GAIL.pth' % opt.data)
         fake = np.load("data/%s/fake_data.pkl" % opt.data, allow_pickle=True)
         state, action, flag = prepare_discriminator(data, fake)
-        dis = Discriminator()
         opt2 = optim.Adam(dis.parameters(), lr=1e-3)
         batch_num = len(state) // batch_size
         for epoch in range(opt.epoch):
@@ -77,7 +76,7 @@ def main(opt):
                     y = batch_inp[:, i]
                     state, hidden = gen.gen_state(batch_inp[:, i - 1], hidden)
                     s = state.detach()
-                    value = get_value(dis, gen, s=x, action=y, seq_len=12, gama=0.98)
+                    value = get_value(dis, gen, s=x, action=y, seq_len=24, gama=0.98)
                     v = value.detach()
                     value_out = gen.get_value(s, y)
                     loss += loss_fn(value_out, v)
@@ -100,7 +99,6 @@ def main(opt):
         print("第{}次对抗训练开始".format(epoch + 1))
         # 先训练值估计器
         print("***************")
-        loss_fn1 = nn.MSELoss()
         print("开始训练值估计器")
         for mini_epoch in range(3):
             mid_loss = 0
@@ -115,7 +113,7 @@ def main(opt):
                     y = batch_inp[:, i]
                     state, hidden = gen.gen_state(batch_inp[:, i - 1], hidden)
                     s = state.detach()
-                    value = get_value(dis, gen, s=x, action=y, seq_len=12, gama=0.98)
+                    value = get_value(dis, gen, s=x, action=y, seq_len=24, gama=0.98)
                     v = value.detach()
                     value_out = gen.get_value(s, y)
                     loss += loss_fn1(value_out, v)
@@ -142,7 +140,7 @@ def main(opt):
             print("_________________")
         print("***************")
         print("开始训练判别器")
-        fake = gen.sample(real_inp[:, 0].view(-1, 1), 12)
+        fake = gen.sample(real_inp[:, 0].view(-1, 1), 24)
         dis_state, dis_action, dis_target = prepare_discriminator(real, fake, raw=False)
         dis_num = len(dis_target) // batch_size
         for mini_epoch in range(3):
@@ -165,7 +163,7 @@ def main(opt):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pretrain', default=True, action='store_true')
+    parser.add_argument('--pretrain', default=False, action='store_true')
     parser.add_argument('--data', default="HaiNan")
     parser.add_argument('--epoch', default=20)
     opt = parser.parse_args()
