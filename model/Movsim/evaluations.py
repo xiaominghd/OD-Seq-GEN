@@ -407,15 +407,14 @@ class CollectiveEval(object):
 def evaluate(datasets):
     if datasets == 'telecom':
         individualEval = IndividualEval(data='mobile')
-        start_point = np.load('/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/mobile/start.npy')
+        # start_point = np.load('/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/mobile/start.npy')
     else:
         individualEval = IndividualEval(data='HaiNan')
-        start_point = np.load('/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/HaiNan/start.npy')
+        # start_point = np.load('/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/HaiNan/start.npy')
 
     test_data = read_data_from_file(
-        '/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/%s/test.data' % opt.datasets)
-    gene_data = read_data_from_file(
-        '/mnt/data/gonghaofeng/deeplearning_project/MoveSim-master/data/%s/gene.data' % opt.datasets)
+        '/mnt/data/gonghaofeng/deeplearning_project/ODseq_GAN_remote/model/Movsim/data/HaiNan/real.data')
+    gene_data = read_data_from_file('/mnt/data/gonghaofeng/deeplearning_project/ODseq_GAN_remote/Gen_data/HaiKou/Movesim/gene.data')
     print(individualEval.get_individual_jsds(test_data, gene_data))
 
 

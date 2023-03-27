@@ -27,3 +27,7 @@ class t_Lstm(nn.Module):
             nn.Tanh(),
             nn.Linear(self.hidden, self.loc_dim)
         )
+        self.fc2 = nn.Linear(self.hidden, self.loc_dim)
+
+    def forward(self, x):
+

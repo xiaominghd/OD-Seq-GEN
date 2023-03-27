@@ -4,8 +4,19 @@ import numpy as np
 import model.OD_seqGEN.DataLoader as DataLoader
 from JSD import JSD_Metrix
 
-Real_file = "/mnt/data/gonghaofeng/deeplearning_project/ODseq_GAN_remote/data/CDR_HaiNan/Sanya/SanYa.csv"
-Gen_file = "/mnt/data/gonghaofeng/deeplearning_project/ODseq_GAN_remote/Gen_data/SanYa/OD_seqGAN/"
+Real_file = "/mnt/data/gonghaofeng/deeplearning_project/ODseq_GAN_remote/data/CDR_HaiNan/HaiKou/haikou_8.csv"
+Gen_file = "/mnt/data/gonghaofeng/deeplearning_project/ODseq_GAN_remote/Gen_data/HaiKou/SVAE/SVAE.csv"
+r_traject = pd.read_csv(Real_file)
+g_traject = pd.read_csv(Gen_file)
+t1 = DataLoader.choice(r_traject, num=200)
+t2 = DataLoader.choice(g_traject, num=50)
+m = JSD_Metrix(t1, t2)
+print(m.get_JSD_distance())
+print(m.get_redius())
+print(m.get_JSD_duration())
+print(m.get_JSD_trajlen())
+print(m.get_JSD_Loc())
+print(m.get_JSD_start())
 
 
 def view(data_len):
@@ -60,5 +71,5 @@ def view(data_len):
     plt.plot(x, radius)
     plt.show()
 
-
-view(data_len=31)
+#
+# view(data_len=31)

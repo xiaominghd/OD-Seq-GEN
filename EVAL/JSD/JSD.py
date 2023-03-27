@@ -30,10 +30,16 @@ class JSD_Metrix(object):
         p = []
         q = []
         for i in range(len(self.inp)):
+            if len(self.inp[i]) == 1:
+                p.append(0)
+                continue
             for j in range(len(self.inp[i]) - 1):
                 p.append(distance(self.inp[i][j][0], self.inp[i][j + 1][0]))
 
         for i in range(len(self.target)):
+            if len(self.target[i]) == 1:
+                q.append(0)
+                continue
             for j in range(len(self.target[i]) - 1):
                 q.append(distance(self.target[i][j][0], self.target[i][j + 1][0]))
         min_val = min(min(p), min(q))
@@ -79,27 +85,6 @@ class JSD_Metrix(object):
         q = distribution(q, min_val, max_val, bin=500)
         return JS_divergence(p, q)
 
-        # p = np.zeros([2500])
-        # q = np.zeros([2500])
-        #
-        # # for i in range(len(self.inp)):
-        # #     for j in range(len(self.inp[i])):
-        # #         p[int(self.inp[i][j][0] / 50)] += 1
-        # #
-        # # for i in range(len(self.target)):
-        # #     for j in range(len(self.target[i])):
-        # #         q[int(self.target[i][j][0]/50)] += 1
-        # for i in range(len(self.inp)):
-        #     for j in range(len(self.inp[i])):
-        #         p[self.inp[i][j][0]] += 1
-        # for i in range(len(self.target)):
-        #     for j in range(len(self.target[i])):
-        #         q[self.target[i][j][0]] += 1
-        #
-        # p = np.array(p / sum(p))
-        # q = np.array(q / sum(q))
-
-        return JS_divergence(p, q)
 
     def get_JSD_duration(self):
 
@@ -151,10 +136,16 @@ class JSD_Metrix(object):
         p = []
         q = []
         for i in range(len(self.inp)):
+            if len(self.inp[i]) == 1:
+                p.append(0)
+                continue
             for j in range(len(self.inp[i]) - 1):
                 p.append(max(0, distance(self.inp[i][0][0], self.inp[i][j][0])))
 
         for i in range(len(self.target)):
+            if len(self.target[i]) == 1:
+                q.append(0)
+                continue
             for j in range(len(self.target[i]) - 1):
                 q.append(max(0, distance(self.target[i][0][0], self.target[i][j][0])))
         min_val = min(min(p), min(q))
